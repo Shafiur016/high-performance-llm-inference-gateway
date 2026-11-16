@@ -1,0 +1,22 @@
+services:
+  gateway:
+    build: .
+    environment:
+      GATEWAY_API_KEY: ${GATEWAY_API_KEY:-local-demo-key}
+      VLLM_URL: ${VLLM_URL:-}
+      VLLM_API_KEY: ${VLLM_API_KEY:-local}
+      MODEL_NAME: ${MODEL_NAME:-Qwen/Qwen3-0.6B}
+      REDIS_URL: redis://redis:6379/0
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on: [redis]
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:6379:6379"]
+  vllm:
+    profiles: [gpu]
+    image: vllm/vllm-openai:latest
+    ipc: host
+    runtime: nvidia
+    environment: {HF_TOKEN: "${HF_TOKEN:-}"}
+    command: ["--model", "${MODEL_NAME:-Qwen/Qwen3-0.6B}", "--max-model-len", "2048"]
+    ports: ["127.0.0.1:8001:8000"]

@@ -1,0 +1,3 @@
+# Security and deployment boundaries
+
+This is an educational engineering reference implementation, **not a penetration-tested production deployment**. Never commit `.env`, secrets, raw private documents, user data, or weights subject to license restrictions. Before public deployment: configure HTTPS, secret storage and rotation, request size limits, production CORS, rate limits, dependency scanning, database backups, monitoring, and a threat model. Development Docker settings (localhost ports, default usernames, disabled external-service security) must not be deployed on the public internet. Report discovered vulnerabilities privately to the repository maintainer.
